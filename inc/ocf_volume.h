@@ -31,6 +31,8 @@ struct ocf_volume_uuid {
 
 	void *data;
 		/*!< UUID data content */
+
+  void *runtime_data;
 };
 
 /**

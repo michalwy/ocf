@@ -16,6 +16,7 @@
  * @brief OCF main control structure
  */
 struct ocf_ctx {
+  void *priv;
 	const struct ocf_ctx_ops *ops;
 	const struct ocf_ctx_config *cfg;
 	struct ocf_logger logger;

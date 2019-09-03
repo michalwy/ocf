@@ -108,6 +108,7 @@ int ocf_volume_init(ocf_volume_t volume, ocf_volume_type_t type,
 	}
 
 	volume->uuid.size = uuid->size;
+  volume->uuid.runtime_data = uuid->runtime_data;
 
 	return 0;
 

@@ -61,6 +61,7 @@ static int ocf_mngt_core_set_uuid_metadata(ocf_core_t core,
 	if (new_uuid) {
 		new_uuid->data = muuid->data;
 		new_uuid->size = muuid->size;
+    new_uuid->runtime_data = uuid->runtime_data;
 	}
 
 	return 0;

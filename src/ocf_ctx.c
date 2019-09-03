@@ -164,6 +164,18 @@ err_ctx:
 	return ret;
 }
 
+void ocf_ctx_set_priv(ocf_ctx_t ctx, void *priv)
+{
+	OCF_CHECK_NULL(ctx);
+  ctx->priv = priv;
+}
+
+void *ocf_ctx_get_priv(ocf_ctx_t ctx)
+{
+  OCF_CHECK_NULL(ctx);
+  return ctx->priv;
+}
+
 /*
  *
  */

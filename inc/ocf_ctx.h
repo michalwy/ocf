@@ -294,6 +294,9 @@ int ocf_ctx_volume_create(ocf_ctx_t ctx, ocf_volume_t *volume,
  */
 int ocf_ctx_create(ocf_ctx_t *ctx, const struct ocf_ctx_config *cfg);
 
+void ocf_ctx_set_priv(ocf_ctx_t ctx, void *priv);
+void *ocf_ctx_get_priv(ocf_ctx_t ctx);
+
 /**
  * @brief Increase reference counter of ctx
  *
