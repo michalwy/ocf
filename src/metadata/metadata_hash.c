@@ -2828,95 +2828,185 @@ static void ocf_metadata_hash_init_iface(struct ocf_cache *cache,
 
 	switch (cache->metadata.settings.size) {
 	case ocf_cache_line_size_4:
-		iface->test_dirty = _ocf_metadata_test_dirty_u8;
-		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u8;
-		iface->clear_dirty = _ocf_metadata_clear_dirty_u8;
-		iface->set_dirty = _ocf_metadata_set_dirty_u8;
-		iface->test_and_set_dirty = _ocf_metadata_test_and_set_dirty_u8;
+		iface->test_dirty = _ocf_metadata_test_dirty_u8_1;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u8_1;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u8_1;
+		iface->set_dirty = _ocf_metadata_set_dirty_u8_1;
+		iface->test_and_set_dirty = _ocf_metadata_test_and_set_dirty_u8_1;
 		iface->test_and_clear_dirty =
-				_ocf_metadata_test_and_clear_dirty_u8;
-		iface->test_valid = _ocf_metadata_test_valid_u8;
-		iface->test_out_valid = _ocf_metadata_test_out_valid_u8;
-		iface->clear_valid = _ocf_metadata_clear_valid_u8;
-		iface->set_valid = _ocf_metadata_set_valid_u8;
-		iface->test_and_set_valid = _ocf_metadata_test_and_set_valid_u8;
+				_ocf_metadata_test_and_clear_dirty_u8_1;
+		iface->test_valid = _ocf_metadata_test_valid_u8_1;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u8_1;
+		iface->clear_valid = _ocf_metadata_clear_valid_u8_1;
+		iface->set_valid = _ocf_metadata_set_valid_u8_1;
+		iface->test_and_set_valid = _ocf_metadata_test_and_set_valid_u8_1;
 		iface->test_and_clear_valid =
-				_ocf_metadata_test_and_clear_valid_u8;
+				_ocf_metadata_test_and_clear_valid_u8_1;
 		break;
 
 	case ocf_cache_line_size_8:
-		iface->test_dirty = _ocf_metadata_test_dirty_u16;
-		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u16;
-		iface->clear_dirty = _ocf_metadata_clear_dirty_u16;
-		iface->set_dirty = _ocf_metadata_set_dirty_u16;
+		iface->test_dirty = _ocf_metadata_test_dirty_u16_1;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u16_1;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u16_1;
+		iface->set_dirty = _ocf_metadata_set_dirty_u16_1;
 		iface->test_and_set_dirty =
-				_ocf_metadata_test_and_set_dirty_u16;
+				_ocf_metadata_test_and_set_dirty_u16_1;
 		iface->test_and_clear_dirty =
-				_ocf_metadata_test_and_clear_dirty_u16;
-		iface->test_valid = _ocf_metadata_test_valid_u16;
-		iface->test_out_valid = _ocf_metadata_test_out_valid_u16;
-		iface->clear_valid = _ocf_metadata_clear_valid_u16;
-		iface->set_valid = _ocf_metadata_set_valid_u16;
+				_ocf_metadata_test_and_clear_dirty_u16_1;
+		iface->test_valid = _ocf_metadata_test_valid_u16_1;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u16_1;
+		iface->clear_valid = _ocf_metadata_clear_valid_u16_1;
+		iface->set_valid = _ocf_metadata_set_valid_u16_1;
 		iface->test_and_set_valid =
-				_ocf_metadata_test_and_set_valid_u16;
+				_ocf_metadata_test_and_set_valid_u16_1;
 		iface->test_and_clear_valid =
-				_ocf_metadata_test_and_clear_valid_u16;
+				_ocf_metadata_test_and_clear_valid_u16_1;
 		break;
 
 	case ocf_cache_line_size_16:
-		iface->test_dirty = _ocf_metadata_test_dirty_u32;
-		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u32;
-		iface->clear_dirty = _ocf_metadata_clear_dirty_u32;
-		iface->set_dirty = _ocf_metadata_set_dirty_u32;
+		iface->test_dirty = _ocf_metadata_test_dirty_u32_1;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u32_1;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u32_1;
+		iface->set_dirty = _ocf_metadata_set_dirty_u32_1;
 		iface->test_and_set_dirty =
-				_ocf_metadata_test_and_set_dirty_u32;
+				_ocf_metadata_test_and_set_dirty_u32_1;
 		iface->test_and_clear_dirty =
-				_ocf_metadata_test_and_clear_dirty_u32;
-		iface->test_valid = _ocf_metadata_test_valid_u32;
-		iface->test_out_valid = _ocf_metadata_test_out_valid_u32;
-		iface->clear_valid = _ocf_metadata_clear_valid_u32;
-		iface->set_valid = _ocf_metadata_set_valid_u32;
+				_ocf_metadata_test_and_clear_dirty_u32_1;
+		iface->test_valid = _ocf_metadata_test_valid_u32_1;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u32_1;
+		iface->clear_valid = _ocf_metadata_clear_valid_u32_1;
+		iface->set_valid = _ocf_metadata_set_valid_u32_1;
 		iface->test_and_set_valid =
-				_ocf_metadata_test_and_set_valid_u32;
+				_ocf_metadata_test_and_set_valid_u32_1;
 		iface->test_and_clear_valid =
-				_ocf_metadata_test_and_clear_valid_u32;
+				_ocf_metadata_test_and_clear_valid_u32_1;
 		break;
 	case ocf_cache_line_size_32:
-		iface->test_dirty = _ocf_metadata_test_dirty_u64;
-		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u64;
-		iface->clear_dirty = _ocf_metadata_clear_dirty_u64;
-		iface->set_dirty = _ocf_metadata_set_dirty_u64;
+		iface->test_dirty = _ocf_metadata_test_dirty_u64_1;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u64_1;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u64_1;
+		iface->set_dirty = _ocf_metadata_set_dirty_u64_1;
 		iface->test_and_set_dirty =
-				_ocf_metadata_test_and_set_dirty_u64;
+				_ocf_metadata_test_and_set_dirty_u64_1;
 		iface->test_and_clear_dirty =
-				_ocf_metadata_test_and_clear_dirty_u64;
-		iface->test_valid = _ocf_metadata_test_valid_u64;
-		iface->test_out_valid = _ocf_metadata_test_out_valid_u64;
-		iface->clear_valid = _ocf_metadata_clear_valid_u64;
-		iface->set_valid = _ocf_metadata_set_valid_u64;
+				_ocf_metadata_test_and_clear_dirty_u64_1;
+		iface->test_valid = _ocf_metadata_test_valid_u64_1;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u64_1;
+		iface->clear_valid = _ocf_metadata_clear_valid_u64_1;
+		iface->set_valid = _ocf_metadata_set_valid_u64_1;
 		iface->test_and_set_valid =
-				_ocf_metadata_test_and_set_valid_u64;
+				_ocf_metadata_test_and_set_valid_u64_1;
 		iface->test_and_clear_valid =
-				_ocf_metadata_test_and_clear_valid_u64;
+				_ocf_metadata_test_and_clear_valid_u64_1;
 		break;
 
 	case ocf_cache_line_size_64:
-		iface->test_dirty = _ocf_metadata_test_dirty_u128;
-		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128;
-		iface->clear_dirty = _ocf_metadata_clear_dirty_u128;
-		iface->set_dirty = _ocf_metadata_set_dirty_u128;
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_1;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_1;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_1;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_1;
 		iface->test_and_set_dirty =
-				_ocf_metadata_test_and_set_dirty_u128;
+				_ocf_metadata_test_and_set_dirty_u128_1;
 		iface->test_and_clear_dirty =
-				_ocf_metadata_test_and_clear_dirty_u128;
-		iface->test_valid = _ocf_metadata_test_valid_u128;
-		iface->test_out_valid = _ocf_metadata_test_out_valid_u128;
-		iface->clear_valid = _ocf_metadata_clear_valid_u128;
-		iface->set_valid = _ocf_metadata_set_valid_u128;
+				_ocf_metadata_test_and_clear_dirty_u128_1;
+		iface->test_valid = _ocf_metadata_test_valid_u128_1;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_1;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_1;
+		iface->set_valid = _ocf_metadata_set_valid_u128_1;
 		iface->test_and_set_valid =
-				_ocf_metadata_test_and_set_valid_u128;
+				_ocf_metadata_test_and_set_valid_u128_1;
 		iface->test_and_clear_valid =
-				_ocf_metadata_test_and_clear_valid_u128;
+				_ocf_metadata_test_and_clear_valid_u128_1;
+		break;
+	case ocf_cache_line_size_128:
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_2;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_2;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_2;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_2;
+		iface->test_and_set_dirty =
+				_ocf_metadata_test_and_set_dirty_u128_2;
+		iface->test_and_clear_dirty =
+				_ocf_metadata_test_and_clear_dirty_u128_2;
+		iface->test_valid = _ocf_metadata_test_valid_u128_2;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_2;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_2;
+		iface->set_valid = _ocf_metadata_set_valid_u128_2;
+		iface->test_and_set_valid =
+				_ocf_metadata_test_and_set_valid_u128_2;
+		iface->test_and_clear_valid =
+				_ocf_metadata_test_and_clear_valid_u128_2;
+		break;
+	case ocf_cache_line_size_256:
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_4;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_4;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_4;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_4;
+		iface->test_and_set_dirty =
+				_ocf_metadata_test_and_set_dirty_u128_4;
+		iface->test_and_clear_dirty =
+				_ocf_metadata_test_and_clear_dirty_u128_4;
+		iface->test_valid = _ocf_metadata_test_valid_u128_4;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_4;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_4;
+		iface->set_valid = _ocf_metadata_set_valid_u128_4;
+		iface->test_and_set_valid =
+				_ocf_metadata_test_and_set_valid_u128_4;
+		iface->test_and_clear_valid =
+				_ocf_metadata_test_and_clear_valid_u128_4;
+		break;
+	case ocf_cache_line_size_512:
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_8;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_8;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_8;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_8;
+		iface->test_and_set_dirty =
+				_ocf_metadata_test_and_set_dirty_u128_8;
+		iface->test_and_clear_dirty =
+				_ocf_metadata_test_and_clear_dirty_u128_8;
+		iface->test_valid = _ocf_metadata_test_valid_u128_8;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_8;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_8;
+		iface->set_valid = _ocf_metadata_set_valid_u128_8;
+		iface->test_and_set_valid =
+				_ocf_metadata_test_and_set_valid_u128_8;
+		iface->test_and_clear_valid =
+				_ocf_metadata_test_and_clear_valid_u128_8;
+		break;
+	case ocf_cache_line_size_1024:
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_16;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_16;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_16;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_16;
+		iface->test_and_set_dirty =
+				_ocf_metadata_test_and_set_dirty_u128_16;
+		iface->test_and_clear_dirty =
+				_ocf_metadata_test_and_clear_dirty_u128_16;
+		iface->test_valid = _ocf_metadata_test_valid_u128_16;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_16;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_16;
+		iface->set_valid = _ocf_metadata_set_valid_u128_16;
+		iface->test_and_set_valid =
+				_ocf_metadata_test_and_set_valid_u128_16;
+		iface->test_and_clear_valid =
+				_ocf_metadata_test_and_clear_valid_u128_16;
+		break;
+	case ocf_cache_line_size_2048:
+		iface->test_dirty = _ocf_metadata_test_dirty_u128_32;
+		iface->test_out_dirty = _ocf_metadata_test_out_dirty_u128_32;
+		iface->clear_dirty = _ocf_metadata_clear_dirty_u128_32;
+		iface->set_dirty = _ocf_metadata_set_dirty_u128_32;
+		iface->test_and_set_dirty =
+				_ocf_metadata_test_and_set_dirty_u128_32;
+		iface->test_and_clear_dirty =
+				_ocf_metadata_test_and_clear_dirty_u128_32;
+		iface->test_valid = _ocf_metadata_test_valid_u128_32;
+		iface->test_out_valid = _ocf_metadata_test_out_valid_u128_32;
+		iface->clear_valid = _ocf_metadata_clear_valid_u128_32;
+		iface->set_valid = _ocf_metadata_set_valid_u128_32;
+		iface->test_and_set_valid =
+				_ocf_metadata_test_and_set_valid_u128_32;
+		iface->test_and_clear_valid =
+				_ocf_metadata_test_and_clear_valid_u128_32;
 		break;
 
 	default:

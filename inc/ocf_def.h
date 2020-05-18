@@ -272,13 +272,19 @@ typedef enum {
 	ocf_cache_line_size_64 = 64 * KiB,
 		/*!< 64 kiB */
 
+	ocf_cache_line_size_128 = 128 * KiB,
+	ocf_cache_line_size_256 = 256 * KiB,
+	ocf_cache_line_size_512 = 512 * KiB,
+	ocf_cache_line_size_1024 = 1024 * KiB,
+	ocf_cache_line_size_2048 = 2048 * KiB,
+
 	ocf_cache_line_size_default = ocf_cache_line_size_4,
 		/*!< Default cache line size */
 
 	ocf_cache_line_size_min = ocf_cache_line_size_4,
 		/*!< Minimum cache line size */
 
-	ocf_cache_line_size_max = ocf_cache_line_size_64,
+	ocf_cache_line_size_max = ocf_cache_line_size_2048,
 		/*!< Maximal cache line size */
 
 	ocf_cache_line_size_inf = ~0ULL,

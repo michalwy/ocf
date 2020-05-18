@@ -229,7 +229,7 @@ static void _ocf_cleaner_cache_line_unlock(struct ocf_request *req)
 }
 
 static bool _ocf_cleaner_sector_is_dirty(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t sector)
+		ocf_cache_line_t line, uint32_t sector)
 {
 	bool dirty = metadata_test_dirty_one(cache, line, sector);
 	bool valid = metadata_test_valid_one(cache, line, sector);

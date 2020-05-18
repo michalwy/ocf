@@ -7,7 +7,7 @@
  * Sector mask getter
  ******************************************************************************/
 
-static inline uint64_t _get_mask(uint8_t start, uint8_t stop)
+static inline uint64_t _get_mask(uint32_t start, uint32_t stop)
 {
 	uint64_t mask = 0;
 
@@ -29,7 +29,7 @@ static inline uint64_t _get_mask(uint8_t start, uint8_t stop)
 
 typedef __uint128_t u128;
 
-static inline u128 _get_mask_u128(uint8_t start, uint8_t stop)
+static inline u128 _get_mask_u128(uint32_t start, uint32_t stop)
 {
 	u128 mask = 0;
 
@@ -44,18 +44,20 @@ static inline u128 _get_mask_u128(uint8_t start, uint8_t stop)
 	return mask;
 }
 
-#define ocf_metadata_bit_struct(type) \
-struct ocf_metadata_map_##type { \
+#define ocf_metadata_bit_struct(type, count) \
+struct ocf_metadata_map_##type##_##count { \
 	struct ocf_metadata_map map; \
-	type valid; \
-	type dirty; \
+	type valid[count]; \
+	type dirty[count]; \
 } __attribute__((packed))
 
-#define ocf_metadata_bit_func(what, type) \
-static bool _ocf_metadata_test_##what##_##type(struct ocf_cache *cache, \
-		ocf_cache_line_t line, uint8_t start, uint8_t stop, bool all) \
+#define ocf_metadata_bit_for_each_byte(type, count)	\
 { \
-	type mask = _get_mask_##type(start, stop); \
+	uint32_t bits = sizeof(type) << 3; \
+	uint32_t b; \
+	uint32_t bits_left; \
+	uint32_t s_b, e_b; \
+	type mask; \
 \
 	struct ocf_metadata_hash_ctrl *ctrl = \
 		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
@@ -63,178 +65,168 @@ static bool _ocf_metadata_test_##what##_##type(struct ocf_cache *cache, \
 	struct ocf_metadata_raw *raw = \
 			&ctrl->raw_desc[metadata_segment_collision]; \
 \
-	const struct ocf_metadata_map_##type *map = raw->mem_pool; \
+	struct ocf_metadata_map_##type##_##count *map = raw->mem_pool; \
 \
 	_raw_bug_on(raw, line); \
 \
-	if (all) { \
-		if (mask == (map[line].what & mask)) { \
-			return true; \
-		} else { \
-			return false; \
+	bits_left = stop - start + 1; \
+	b = start / bits; \
+	s_b = start % bits; \
+	while (bits_left) { \
+		BUG_ON(b >= count); \
+		e_b = s_b + bits_left - 1; \
+		if (e_b >= bits) { \
+			e_b = bits - 1; \
 		} \
-	} else { \
-		if (map[line].what & mask) { \
-			return true; \
+		mask = _get_mask_##type(s_b, e_b);
+
+
+#define ocf_metadata_bit_next_byte \
+} \
+		bits_left -= e_b - s_b + 1; \
+		s_b = 0; \
+		b++; \
+}
+
+#define ocf_metadata_bit_func(what, type, count) \
+static bool _ocf_metadata_test_##what##_##type##_##count(struct ocf_cache *cache, \
+		ocf_cache_line_t line, uint32_t start, uint32_t stop, bool all) \
+{ \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		if (all) { \
+			if (mask != (map[line].what[b] & mask)) { \
+				return false; \
+			} \
 		} else { \
-			return false; \
+			if (map[line].what[b] & mask) { \
+				return true; \
+			} \
 		} \
+		ocf_metadata_bit_next_byte; \
 	} \
+	return all; \
 } \
 \
-static bool _ocf_metadata_test_out_##what##_##type(struct ocf_cache *cache, \
-		ocf_cache_line_t line, uint8_t start, uint8_t stop) \
+static bool _ocf_metadata_test_out_##what##_##type##_##count(struct ocf_cache *cache, \
+		ocf_cache_line_t line, uint32_t start, uint32_t stop) \
 { \
-	type mask = _get_mask_##type(start, stop); \
-\
-	struct ocf_metadata_hash_ctrl *ctrl = \
-		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
-\
-	struct ocf_metadata_raw *raw = \
-			&ctrl->raw_desc[metadata_segment_collision]; \
-\
-	const struct ocf_metadata_map_##type *map = raw->mem_pool; \
-\
-	_raw_bug_on(raw, line); \
-\
-	if (map[line].what & ~mask) { \
-		return true; \
-	} else { \
-		return false; \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		if (map[line].what[b] & ~mask) { \
+			return true; \
+		} \
+		ocf_metadata_bit_next_byte; \
 	} \
+	return false; \
 } \
 \
-static bool _ocf_metadata_clear_##what##_##type(struct ocf_cache *cache, \
-		ocf_cache_line_t line, uint8_t start, uint8_t stop) \
+static bool _ocf_metadata_clear_##what##_##type##_##count(struct ocf_cache *cache, \
+		ocf_cache_line_t line, uint32_t start, uint32_t stop) \
 { \
-	type mask = _get_mask_##type(start, stop); \
+	bool result = false; \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		map[line].what[b] &= ~mask; \
 \
-	struct ocf_metadata_hash_ctrl *ctrl = \
-		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
-\
-	struct ocf_metadata_raw *raw = \
-			&ctrl->raw_desc[metadata_segment_collision]; \
-\
-	struct ocf_metadata_map_##type *map = raw->mem_pool; \
-\
-	_raw_bug_on(raw, line); \
-\
-	map[line].what &= ~mask; \
-\
-	if (map[line].what) { \
-		return true; \
-	} else { \
-		return false; \
+		if (map[line].what[b]) { \
+			result |= true; \
+		} \
+		ocf_metadata_bit_next_byte; \
 	} \
+	return result; \
 } \
 \
-static bool _ocf_metadata_set_##what##_##type(struct ocf_cache *cache, \
-		ocf_cache_line_t line, uint8_t start, uint8_t stop) \
+static bool _ocf_metadata_set_##what##_##type##_##count(struct ocf_cache *cache, \
+		ocf_cache_line_t line, uint32_t start, uint32_t stop) \
 { \
-	bool result; \
-	type mask = _get_mask_##type(start, stop); \
+	bool result = false; \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		result |= (map[line].what[b] ? true : false); \
 \
-	struct ocf_metadata_hash_ctrl *ctrl = \
-		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
+		map[line].what[b] |= mask; \
 \
-	struct ocf_metadata_raw *raw = \
-			&ctrl->raw_desc[metadata_segment_collision]; \
-\
-	struct ocf_metadata_map_##type *map = raw->mem_pool; \
-\
-	_raw_bug_on(raw, line); \
-\
-	result = map[line].what ? true : false; \
-\
-	map[line].what |= mask; \
+		ocf_metadata_bit_next_byte; \
+	} \
 \
 	return result; \
 } \
 \
-static bool _ocf_metadata_test_and_set_##what##_##type( \
+static bool _ocf_metadata_test_and_set_##what##_##type##_##count( \
 		struct ocf_cache *cache, ocf_cache_line_t line, \
-		uint8_t start, uint8_t stop, bool all) \
+		uint32_t start, uint32_t stop, bool all) \
 { \
-	bool test; \
-	type mask = _get_mask_##type(start, stop); \
+	bool test = all; \
 \
-	struct ocf_metadata_hash_ctrl *ctrl = \
-		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
-\
-	struct ocf_metadata_raw *raw = \
-			&ctrl->raw_desc[metadata_segment_collision]; \
-\
-	struct ocf_metadata_map_##type *map = raw->mem_pool; \
-\
-	_raw_bug_on(raw, line); \
-\
-	if (all) { \
-		if (mask == (map[line].what & mask)) { \
-			test = true; \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		if (all) { \
+			if (mask != (map[line].what[b] & mask)) { \
+				test = false; \
+			} \
 		} else { \
-			test = false; \
+			if (map[line].what[b] & mask) { \
+				test = true; \
+			} \
 		} \
-	} else { \
-		if (map[line].what & mask) { \
-			test = true; \
-		} else { \
-			test = false; \
-		} \
+		map[line].what[b] |= mask; \
+\
+		ocf_metadata_bit_next_byte; \
 	} \
 \
-	map[line].what |= mask; \
 	return test; \
 } \
 \
-static bool _ocf_metadata_test_and_clear_##what##_##type( \
+static bool _ocf_metadata_test_and_clear_##what##_##type##_##count( \
 		struct ocf_cache *cache, ocf_cache_line_t line, \
-		uint8_t start, uint8_t stop, bool all) \
+		uint32_t start, uint32_t stop, bool all) \
 { \
-	bool test; \
-	type mask = _get_mask_##type(start, stop); \
+	bool test = all; \
 \
-	struct ocf_metadata_hash_ctrl *ctrl = \
-		(struct ocf_metadata_hash_ctrl *) cache->metadata.iface_priv; \
-\
-	struct ocf_metadata_raw *raw = \
-			&ctrl->raw_desc[metadata_segment_collision]; \
-\
-	struct ocf_metadata_map_##type *map = raw->mem_pool; \
-\
-	_raw_bug_on(raw, line); \
-\
-	if (all) { \
-		if (mask == (map[line].what & mask)) { \
-			test = true; \
+	ocf_metadata_bit_for_each_byte(type, count) { \
+		if (all) { \
+			if (mask != (map[line].what[b] & mask)) { \
+				test = false; \
+			} \
 		} else { \
-			test = false; \
+			if (map[line].what[b] & mask) { \
+				test = true; \
+			} \
 		} \
-	} else { \
-		if (map[line].what & mask) { \
-			test = true; \
-		} else { \
-			test = false; \
-		} \
+		map[line].what[b] &= ~mask; \
+\
+		ocf_metadata_bit_next_byte; \
 	} \
 \
-	map[line].what &= ~mask; \
 	return test; \
 } \
 
-ocf_metadata_bit_struct(u8);
-ocf_metadata_bit_struct(u16);
-ocf_metadata_bit_struct(u32);
-ocf_metadata_bit_struct(u64);
-ocf_metadata_bit_struct(u128);
+ocf_metadata_bit_struct(u8, 1);			/* 4k */
+ocf_metadata_bit_struct(u16, 1);		/* 8k */
+ocf_metadata_bit_struct(u32, 1);		/* 16k */
+ocf_metadata_bit_struct(u64, 1);		/* 32k */
+ocf_metadata_bit_struct(u128, 1);		/* 64k */
+ocf_metadata_bit_struct(u128, 2);		/* 128k */
+ocf_metadata_bit_struct(u128, 4);		/* 256k */
+ocf_metadata_bit_struct(u128, 8);		/* 512k */
+ocf_metadata_bit_struct(u128, 16);		/* 1024k */
+ocf_metadata_bit_struct(u128, 32);		/* 2048k */
 
-ocf_metadata_bit_func(dirty, u8);
-ocf_metadata_bit_func(dirty, u16);
-ocf_metadata_bit_func(dirty, u32);
-ocf_metadata_bit_func(dirty, u64);
-ocf_metadata_bit_func(dirty, u128);
+ocf_metadata_bit_func(dirty, u8, 1);
+ocf_metadata_bit_func(dirty, u16, 1);
+ocf_metadata_bit_func(dirty, u32, 1);
+ocf_metadata_bit_func(dirty, u64, 1);
+ocf_metadata_bit_func(dirty, u128, 1);
+ocf_metadata_bit_func(dirty, u128, 2);
+ocf_metadata_bit_func(dirty, u128, 4);
+ocf_metadata_bit_func(dirty, u128, 8);
+ocf_metadata_bit_func(dirty, u128, 16);
+ocf_metadata_bit_func(dirty, u128, 32);
 
-ocf_metadata_bit_func(valid, u8);
-ocf_metadata_bit_func(valid, u16);
-ocf_metadata_bit_func(valid, u32);
-ocf_metadata_bit_func(valid, u64);
-ocf_metadata_bit_func(valid, u128);
+ocf_metadata_bit_func(valid, u8, 1);
+ocf_metadata_bit_func(valid, u16, 1);
+ocf_metadata_bit_func(valid, u32, 1);
+ocf_metadata_bit_func(valid, u64, 1);
+ocf_metadata_bit_func(valid, u128, 1);
+ocf_metadata_bit_func(valid, u128, 2);
+ocf_metadata_bit_func(valid, u128, 4);
+ocf_metadata_bit_func(valid, u128, 8);
+ocf_metadata_bit_func(valid, u128, 16);
+ocf_metadata_bit_func(valid, u128, 32);
+

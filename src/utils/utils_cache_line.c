@@ -19,8 +19,8 @@ static inline void ocf_cleaning_set_hot_cache_line(struct ocf_cache *cache,
 	}
 }
 
-static void __set_cache_line_invalid(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, ocf_cache_line_t line,
+static void __set_cache_line_invalid(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, ocf_cache_line_t line,
 		ocf_core_id_t core_id, ocf_part_id_t part_id)
 {
 	ocf_core_t core;
@@ -49,8 +49,8 @@ static void __set_cache_line_invalid(struct ocf_cache *cache, uint8_t start_bit,
 	}
 }
 
-void set_cache_line_invalid(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, struct ocf_request *req, uint32_t map_idx)
+void set_cache_line_invalid(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, struct ocf_request *req, uint32_t map_idx)
 {
 	ocf_cache_line_t line = req->map[map_idx].coll_idx;
 	ocf_part_id_t part_id;
@@ -68,8 +68,8 @@ void set_cache_line_invalid(struct ocf_cache *cache, uint8_t start_bit,
 			end_bit);
 }
 
-void set_cache_line_invalid_no_flush(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, ocf_cache_line_t line)
+void set_cache_line_invalid_no_flush(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, ocf_cache_line_t line)
 {
 	ocf_part_id_t part_id;
 	ocf_core_id_t core_id;
@@ -80,8 +80,8 @@ void set_cache_line_invalid_no_flush(struct ocf_cache *cache, uint8_t start_bit,
 			part_id);
 }
 
-void set_cache_line_valid(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, struct ocf_request *req, uint32_t map_idx)
+void set_cache_line_valid(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, struct ocf_request *req, uint32_t map_idx)
 {
 	ocf_cache_line_t line = req->map[map_idx].coll_idx;
 	ocf_part_id_t part_id = ocf_metadata_get_partition_id(cache, line);
@@ -96,8 +96,8 @@ void set_cache_line_valid(struct ocf_cache *cache, uint8_t start_bit,
 	}
 }
 
-void set_cache_line_clean(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, struct ocf_request *req, uint32_t map_idx)
+void set_cache_line_clean(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, struct ocf_request *req, uint32_t map_idx)
 {
 	ocf_cache_line_t line = req->map[map_idx].coll_idx;
 	ocf_part_id_t part_id = ocf_metadata_get_partition_id(cache, line);
@@ -138,8 +138,8 @@ void set_cache_line_clean(struct ocf_cache *cache, uint8_t start_bit,
 
 }
 
-void set_cache_line_dirty(struct ocf_cache *cache, uint8_t start_bit,
-		uint8_t end_bit, struct ocf_request *req, uint32_t map_idx)
+void set_cache_line_dirty(struct ocf_cache *cache, uint32_t start_bit,
+		uint32_t end_bit, struct ocf_request *req, uint32_t map_idx)
 {
 	ocf_cache_line_t line = req->map[map_idx].coll_idx;
 	ocf_part_id_t part_id = ocf_metadata_get_partition_id(cache, line);

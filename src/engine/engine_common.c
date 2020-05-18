@@ -94,8 +94,8 @@ static inline int _ocf_engine_check_map_entry(struct ocf_cache *cache,
 void ocf_engine_update_req_info(struct ocf_cache *cache,
 		struct ocf_request *req, uint32_t entry)
 {
-	uint8_t start_sector = 0;
-	uint8_t end_sector = ocf_line_end_sector(cache);
+	uint32_t start_sector = 0;
+	uint32_t end_sector = ocf_line_end_sector(cache);
 	struct ocf_map_info *_entry = &(req->map[entry]);
 
 	start_sector = ocf_map_line_start_sector(req, entry);

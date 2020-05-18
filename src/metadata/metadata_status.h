@@ -108,7 +108,7 @@ static inline bool metadata_test_and_set_dirty(struct ocf_cache *cache,
  ******************************************************************************/
 
 static inline bool metadata_test_dirty_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	bool test;
 
@@ -121,7 +121,7 @@ static inline bool metadata_test_dirty_sec(struct ocf_cache *cache,
 }
 
 static inline bool metadata_test_dirty_all_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	bool test;
 
@@ -134,13 +134,13 @@ static inline bool metadata_test_dirty_all_sec(struct ocf_cache *cache,
 }
 
 static inline bool metadata_test_dirty_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	return metadata_test_dirty_sec(cache, line, pos, pos);
 }
 
 static inline bool metadata_test_dirty_out_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	bool test;
 
@@ -152,7 +152,7 @@ static inline bool metadata_test_dirty_out_sec(struct ocf_cache *cache,
 }
 
 static inline void metadata_set_dirty_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.set_dirty(cache, line, start, stop);
@@ -160,7 +160,7 @@ static inline void metadata_set_dirty_sec(struct ocf_cache *cache,
 }
 
 static inline void metadata_clear_dirty_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.clear_dirty(cache, line, start, stop);
@@ -168,7 +168,7 @@ static inline void metadata_clear_dirty_sec(struct ocf_cache *cache,
 }
 
 static inline void metadata_set_dirty_sec_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.set_dirty(cache, line, pos, pos);
@@ -176,7 +176,7 @@ static inline void metadata_set_dirty_sec_one(struct ocf_cache *cache,
 }
 
 static inline void metadata_clear_dirty_sec_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.clear_dirty(cache, line, pos, pos);
@@ -185,7 +185,7 @@ static inline void metadata_clear_dirty_sec_one(struct ocf_cache *cache,
 
 static inline bool metadata_test_and_clear_dirty_sec(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop)
+		uint32_t start, uint32_t stop)
 {
 	bool test = false;
 
@@ -205,7 +205,7 @@ static inline bool metadata_test_and_clear_dirty_sec(
  */
 static inline bool metadata_clear_dirty_sec_changed(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop, bool *line_is_clean)
+		uint32_t start, uint32_t stop, bool *line_is_clean)
 {
 	bool sec_changed;
 
@@ -229,7 +229,7 @@ static inline bool metadata_clear_dirty_sec_changed(
  */
 static inline bool metadata_set_dirty_sec_changed(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop, bool *line_was_dirty)
+		uint32_t start, uint32_t stop, bool *line_was_dirty)
 {
 	bool sec_changed;
 
@@ -328,7 +328,7 @@ static inline bool metadata_test_and_set_valid(struct ocf_cache *cache,
  ******************************************************************************/
 
 static inline bool metadata_test_valid_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	bool test;
 
@@ -342,7 +342,7 @@ static inline bool metadata_test_valid_sec(struct ocf_cache *cache,
 
 static inline bool metadata_test_valid_any_out_sec(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop)
+		uint32_t start, uint32_t stop)
 {
 	bool test = false;
 
@@ -355,7 +355,7 @@ static inline bool metadata_test_valid_any_out_sec(
 }
 
 static inline bool metadata_test_valid_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	return metadata_test_valid_sec(cache, line, pos, pos);
 }
@@ -369,7 +369,7 @@ static inline bool metadata_test_valid_one(struct ocf_cache *cache,
  */
 static inline bool metadata_set_valid_sec_changed(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop)
+		uint32_t start, uint32_t stop)
 {
 	bool was_any_valid;
 
@@ -382,7 +382,7 @@ static inline bool metadata_set_valid_sec_changed(
 }
 
 static inline void metadata_clear_valid_sec(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t start, uint8_t stop)
+		ocf_cache_line_t line, uint32_t start, uint32_t stop)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.clear_valid(cache, line, start, stop);
@@ -390,7 +390,7 @@ static inline void metadata_clear_valid_sec(struct ocf_cache *cache,
 }
 
 static inline void metadata_clear_valid_sec_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.clear_valid(cache, line, pos, pos);
@@ -398,7 +398,7 @@ static inline void metadata_clear_valid_sec_one(struct ocf_cache *cache,
 }
 
 static inline void metadata_set_valid_sec_one(struct ocf_cache *cache,
-		ocf_cache_line_t line, uint8_t pos)
+		ocf_cache_line_t line, uint32_t pos)
 {
 	OCF_METADATA_BITS_LOCK_WR();
 	cache->metadata.iface.set_valid(cache, line, pos, pos);
@@ -413,7 +413,7 @@ static inline void metadata_set_valid_sec_one(struct ocf_cache *cache,
  */
 static inline bool metadata_clear_valid_sec_changed(
 		struct ocf_cache *cache, ocf_cache_line_t line,
-		uint8_t start, uint8_t stop, bool *is_valid)
+		uint32_t start, uint32_t stop, bool *is_valid)
 {
 	bool was_any_valid;
 
