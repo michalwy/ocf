@@ -130,7 +130,7 @@ void ocf_metadata_flush_all(ocf_cache_t cache,
  * @param[in] line - cache line which to be flushed
  */
 void ocf_metadata_flush_mark(struct ocf_cache *cache, struct ocf_request *req,
-		uint32_t map_idx, int to_state, uint8_t start, uint8_t stop);
+		uint32_t map_idx, int to_state, uint32_t start, uint32_t stop);
 
 /**
  * @brief Flush marked cache lines asynchronously

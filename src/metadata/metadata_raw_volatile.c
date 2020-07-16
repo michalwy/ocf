@@ -48,7 +48,7 @@ void raw_volatile_flush_all(ocf_cache_t cache, struct ocf_metadata_raw *raw,
  * RAM RAM Implementation - Mark to Flush
  */
 void raw_volatile_flush_mark(ocf_cache_t cache, struct ocf_request *req,
-		uint32_t map_idx, int to_state, uint8_t start, uint8_t stop)
+		uint32_t map_idx, int to_state, uint32_t start, uint32_t stop)
 {
 }
 

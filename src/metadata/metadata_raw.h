@@ -133,8 +133,8 @@ struct raw_iface {
 			ocf_metadata_end_t cmpl, void *priv);
 
 	void (*flush_mark)(ocf_cache_t cache, struct ocf_request *req,
-			uint32_t map_idx, int to_state, uint8_t start,
-			uint8_t stop);
+			uint32_t map_idx, int to_state, uint32_t start,
+			uint32_t stop);
 
 	int (*flush_do_asynch)(ocf_cache_t cache, struct ocf_request *req,
 			struct ocf_metadata_raw *raw, ocf_req_end_t complete);

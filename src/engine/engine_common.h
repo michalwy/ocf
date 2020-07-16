@@ -113,8 +113,8 @@ static inline uint32_t ocf_engine_io_count(struct ocf_request *req)
 static inline
 bool ocf_engine_map_all_sec_dirty(struct ocf_request *req, uint32_t line)
 {
-	uint8_t start = ocf_map_line_start_sector(req, line);
-	uint8_t end = ocf_map_line_end_sector(req, line);
+	uint32_t start = ocf_map_line_start_sector(req, line);
+	uint32_t end = ocf_map_line_end_sector(req, line);
 
 	if (req->map[line].status != LOOKUP_HIT)
 		return false;
@@ -126,8 +126,8 @@ bool ocf_engine_map_all_sec_dirty(struct ocf_request *req, uint32_t line)
 static inline
 bool ocf_engine_map_all_sec_clean(struct ocf_request *req, uint32_t line)
 {
-	uint8_t start = ocf_map_line_start_sector(req, line);
-	uint8_t end = ocf_map_line_end_sector(req, line);
+	uint32_t start = ocf_map_line_start_sector(req, line);
+	uint32_t end = ocf_map_line_end_sector(req, line);
 
 	if (req->map[line].status != LOOKUP_HIT)
 		return false;

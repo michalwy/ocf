@@ -342,7 +342,7 @@ static void _raw_ram_flush_all(ocf_cache_t cache, struct ocf_metadata_raw *raw,
  */
 static void _raw_ram_flush_mark(ocf_cache_t cache,
 		struct ocf_request *req, uint32_t map_idx, int to_state,
-		uint8_t start, uint8_t stop)
+		uint32_t start, uint32_t stop)
 {
 	if (to_state == DIRTY || to_state == CLEAN) {
 		req->map[map_idx].flush = true;

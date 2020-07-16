@@ -81,10 +81,10 @@ struct ocf_map_info {
 	uint16_t flush : 1;
 	/*!< This bit indicates if cache line need to be flushed */
 
-	uint8_t start_flush;
+	uint32_t start_flush;
 	/*!< If req need flush, contain first sector of range to flush */
 
-	uint8_t stop_flush;
+	uint32_t stop_flush;
 	/*!< If req need flush, contain last sector of range to flush */
 };
 

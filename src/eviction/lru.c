@@ -143,6 +143,9 @@ static void remove_lru_list(ocf_cache_t cache, int partition_id,
 		is_clean_tail = 1;
 	if (part->runtime->eviction.policy.lru.dirty_tail == collision_index)
 		is_dirty_tail = 1;
+	if ((is_clean_tail || is_clean_head) && (is_dirty_tail || is_dirty_head)) {
+		printk("cline: %d, next: %d, prev: %d, cte: %d, dirty: %d\n", collision_index, next_lru_node, prev_lru_node, collision_table_entries, cline_dirty);
+	}
 	ENV_BUG_ON((is_clean_tail || is_clean_head) && (is_dirty_tail || is_dirty_head));
 
 	/* Set prev and next (even if not existent) */
@@ -222,6 +225,10 @@ static void remove_lru_list(ocf_cache_t cache, int partition_id,
 	else {
 		union eviction_policy_meta eviction_prev;
 		union eviction_policy_meta eviction_next;
+
+		if (!(next_lru_node < collision_table_entries) || !(prev_lru_node < collision_table_entries)) {
+			printk("cline: %d, next: %d, prev: %d, cte: %d, dirty: %d\n", collision_index, next_lru_node, prev_lru_node, collision_table_entries, cline_dirty);
+		}
 
 		ENV_BUG_ON(!(next_lru_node < collision_table_entries));
 		ENV_BUG_ON(!(prev_lru_node < collision_table_entries));

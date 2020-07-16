@@ -61,8 +61,8 @@ static void _ocf_zero_io_flush_metadata(struct ocf_request *req, int error)
 static inline void ocf_zero_map_info(struct ocf_request *req)
 {
 	uint32_t map_idx = 0;
-	uint8_t start_bit;
-	uint8_t end_bit;
+	uint32_t start_bit;
+	uint32_t end_bit;
 	struct ocf_map_info *map = req->map;
 	struct ocf_cache *cache = req->cache;
 	uint32_t count = req->core_line_count;

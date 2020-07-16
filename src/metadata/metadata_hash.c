@@ -1763,7 +1763,7 @@ static void ocf_metadata_hash_flush_all(ocf_cache_t cache,
  */
 static void ocf_metadata_hash_flush_mark(struct ocf_cache *cache,
 		struct ocf_request *req, uint32_t map_idx, int to_state,
-		uint8_t start, uint8_t stop)
+		uint32_t start, uint32_t stop)
 {
 	struct ocf_metadata_hash_ctrl *ctrl = NULL;
 

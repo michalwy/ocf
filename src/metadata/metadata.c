@@ -140,7 +140,7 @@ void ocf_metadata_load_recovery(ocf_cache_t cache,
 }
 
 void ocf_metadata_flush_mark(struct ocf_cache *cache, struct ocf_request *req,
-		uint32_t map_idx, int to_state, uint8_t start, uint8_t stop)
+		uint32_t map_idx, int to_state, uint32_t start, uint32_t stop)
 {
 	cache->metadata.iface.flush_mark(cache, req, map_idx, to_state,
 			start, stop);
